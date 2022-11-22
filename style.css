@@ -99,3 +99,31 @@ body {
 
     border-radius: 15px;
 }
+
+/* Clear button */
+
+.eraser,
+.rainbow {
+    color: rgb(26 115 232);
+    background-color: rgb(232 240 254);
+
+    user-select: none;
+    cursor: pointer;
+}
+
+.clear {
+    color: rgb(227 18 18);
+    background-color: rgb(255 227 231);
+
+    user-select: none;
+    cursor: pointer;
+}
+
+/* prompt window .agree,
+.disagree {
+    border: none;
+
+    font-family: inherit;
+
+    background: none;
+} */
