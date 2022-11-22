@@ -8,16 +8,30 @@ const auto = document.querySelector('.auto');
 const clear = document.querySelector('.clear');
 const eraser = document.querySelector('.eraser');
 const rainbow = document.querySelector('.rainbow');
+const shade = document.querySelector('.shade');
 
 const popup = document.querySelector('.popup');
 const agree = document.querySelector('.agree');
 const disagree = document.querySelector('.disagree');
 
 const hexArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c', 'd', 'e', 'f'];
+const shadesOfBlack = [
+    '#D3D3D3',
+    '#C0C0C0',
+    '#B0B0B0',
+    '#989898',
+    '#787878',
+    '#696969',
+    '#505050',
+    '#383838',
+    '#282828',
+    '#000000'
+];
 let color = '#000';
 let autoMode = false;
 let eraserMode = false;
 let rainbowMode = false;
+let shadeMode = false;
 let mouseDown = false;
 
 const getRandomColor = () => {
@@ -38,16 +52,33 @@ const draw = (e) => {
         tempColor = '#fff';
     } else if (rainbowMode) {
         tempColor = getRandomColor();
+    } else if (shadeMode) {
+        const { shadeIndex } = e.target.dataset;
+        tempColor = shadesOfBlack[Number(shadeIndex)];
     } else {
         tempColor = color;
     }
 
     if (e.type === 'mousedown') {
         e.target.style.backgroundColor = tempColor;
-    }
 
-    if (mouseDown || autoMode) {
+        if (!shadeMode) {
+            e.target.dataset.shadeIndex = 0;
+        } else if (shadeMode) {
+            const { shadeIndex } = e.target.dataset;
+            const nextIndex = Number(shadeIndex) + 1;
+            e.target.dataset.shadeIndex = nextIndex > 9 ? 9 : nextIndex;
+        }
+    } else if (mouseDown || autoMode) {
         e.target.style.backgroundColor = tempColor;
+
+        if (eraserMode) {
+            e.target.dataset.shadeIndex = 0;
+        } else if (shadeMode) {
+            const { shadeIndex } = e.target.dataset;
+            const nextIndex = Number(shadeIndex) + 1;
+            e.target.dataset.shadeIndex = nextIndex > 9 ? 9 : nextIndex;
+        }
     }
 };
 
@@ -58,6 +89,7 @@ const createGrid = (gridSize = 1, blockSize = 600) => {
         const div = document.createElement('div');
         div.style.height = `${blockSize}px`;
         div.style.width = `${blockSize}px`;
+        div.dataset.shadeIndex = 0;
         div.addEventListener('mouseenter', draw);
         div.addEventListener('mousedown', draw);
         grid.appendChild(div);
@@ -88,6 +120,10 @@ colorInput.addEventListener('input', (e) => {
         rainbowMode = false;
         rainbow.textContent = 'Rainbow: off';
     }
+    if (shadeMode) {
+        shadeMode = false;
+        shade.textContent = 'Shade: off';
+    }
 });
 
 auto.addEventListener('click', (e) => {
@@ -116,6 +152,10 @@ eraser.addEventListener('click', (e) => {
             rainbowMode = false;
             rainbow.textContent = 'Rainbow: off';
         }
+        if (shadeMode) {
+            shadeMode = false;
+            shade.textContent = 'Shade: off';
+        }
     }
 });
 
@@ -126,6 +166,34 @@ rainbow.addEventListener('click', (e) => {
     } else {
         e.target.textContent = 'Rainbow: on';
         rainbowMode = true;
+
+        if (eraserMode) {
+            eraser.textContent = 'Eraser: off';
+            eraserMode = false;
+        }
+        if (shadeMode) {
+            shadeMode = false;
+            shade.textContent = 'Shade: off';
+        }
+    }
+});
+
+shade.addEventListener('click', (e) => {
+    if (shadeMode) {
+        e.target.textContent = 'Shade: off';
+        shadeMode = false;
+    } else {
+        e.target.textContent = 'Shade: on';
+        shadeMode = true;
+
+        if (eraserMode) {
+            eraser.textContent = 'Eraser: off';
+            eraserMode = false;
+        }
+        if (rainbowMode) {
+            rainbowMode = false;
+            rainbow.textContent = 'Rainbow: off';
+        }
     }
 });
 
@@ -134,6 +202,7 @@ agree.addEventListener('click', () => {
     blocks.forEach((block) => {
         const gridBlock = block;
         gridBlock.style.backgroundColor = '#fff';
+        gridBlock.dataset.shadeIndex = 0;
     });
 
     popup.classList.add('hide');

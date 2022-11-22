@@ -103,7 +103,8 @@ body {
 /* Clear button */
 
 .eraser,
-.rainbow {
+.rainbow,
+.shade {
     color: rgb(26 115 232);
     background-color: rgb(232 240 254);
 
@@ -126,6 +127,7 @@ body {
     left: 50%;
 
     transform: translateX(-50%) translateY(-50%);
+    visibility: hidden;
 }
 
 .popup {
