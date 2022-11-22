@@ -9,7 +9,7 @@
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
-            href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
             rel="stylesheet"
         />
         <link
@@ -23,6 +23,9 @@
         <script src="script.js" defer></script>
     </head>
     <body>
+        <div class="open-menu">
+            <i class="fa-solid fa-bars"></i>
+        </div>
         <div class="popup-overlay">
             <div class="popup hide">
                 <div class="message">
@@ -35,6 +38,13 @@
             </div>
         </div>
         <div class="menu">
+            <div class="logo">
+                <div class="etch">Etch</div>
+                <div>-</div>
+                <div class="a">A</div>
+                <div>-</div>
+                <div class="sketch">Sketch</div>
+            </div>
             <div class="range-value">Size: 1x1</div>
             <input class="range-input" value="1" type="range" min="1" max="100" />
             <div class="auto">Auto: off</div>
@@ -46,10 +56,9 @@
                 <div class="color-value">#000</div>
             </div>
             <div class="clear">Clear</div>
+            <div class="close-menu">Close menu</div>
         </div>
         <div class="container">
-            <h1>Etch A Sketch!</h1>
-
             <div class="grid"></div>
         </div>
     </body>

@@ -13,6 +13,9 @@ const shade = document.querySelector('.shade');
 const popup = document.querySelector('.popup');
 const agree = document.querySelector('.agree');
 const disagree = document.querySelector('.disagree');
+const menu = document.querySelector('.menu');
+const closeMenu = document.querySelector('.close-menu');
+const openMenu = document.querySelector('.open-menu');
 
 const hexArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c', 'd', 'e', 'f'];
 const shadesOfBlack = [
@@ -82,8 +85,12 @@ const draw = (e) => {
     }
 };
 
-const createGrid = (gridSize = 1, blockSize = 600) => {
+const createGrid = (range = 1) => {
     grid.textContent = '';
+
+    const { width: gridWidth } = grid.getBoundingClientRect();
+    const blockSize = gridWidth / range;
+    const gridSize = range ** 2;
 
     for (let i = 0; i < gridSize; i += 1) {
         const div = document.createElement('div');
@@ -102,10 +109,7 @@ rangeInput.addEventListener('input', (e) => {
 
 rangeInput.addEventListener('change', (e) => {
     const range = e.target.valueAsNumber;
-    const { width: gridWidth } = grid.getBoundingClientRect();
-    const blockSize = gridWidth / range;
-    const gridSize = range ** 2;
-    createGrid(gridSize, blockSize);
+    createGrid(range);
 });
 
 colorInput.addEventListener('input', (e) => {
@@ -210,6 +214,14 @@ agree.addEventListener('click', () => {
 
 disagree.addEventListener('click', () => {
     popup.classList.add('hide');
+});
+
+closeMenu.addEventListener('click', () => {
+    menu.classList.add('hide');
+});
+
+openMenu.addEventListener('click', () => {
+    menu.classList.remove('hide');
 });
 
 window.addEventListener('mousedown', (e) => {

@@ -5,13 +5,19 @@
 }
 
 body {
-    font-family: 'Dancing Script', cursive;
+    height: 100vh;
+
+    font-family: 'Roboto', sans-serif;
 }
 
 .container {
+    z-index: 1;
+
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+    height: 100%;
 }
 
 .grid {
@@ -20,16 +26,30 @@ body {
     width: 600px;
     height: 600px;
 
+    border-radius: 4px;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
     user-select: none;
 }
+/* Menu */
+.open-menu {
+    position: absolute;
+    top: 16px;
+    left: 16px;
 
-.grid > div {
-    height: 600px;
-    width: 600px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid rgb(26 115 232);
+    height: 45px;
+    width: 45px;
+
+    background-color: rgb(232 240 254);
+    color: rgb(26 115 232);
+
+    border-radius: 50%;
+    cursor: pointer;
 }
 
-/* Menu */
 .menu {
     position: fixed;
 
@@ -40,10 +60,37 @@ body {
     height: 100vh;
     padding: 24px;
 
-    font-size: 32px;
+    font-size: 24px;
     text-align: center;
 
+    background-color: #fff;
+
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    transition: all 200ms ease-in-out;
+}
+
+.menu.hide {
+    transform: translateX(-100%);
+}
+
+.logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 60px;
+}
+
+.etch {
+    border-bottom: 1px solid #306e30;
+    border-top: 1px solid #306e30;
+}
+.a {
+    border-bottom: 1px solid orange;
+    border-top: 1px solid orange;
+}
+.sketch {
+    border-bottom: 1px solid blueviolet;
+    border-top: 1px solid blueviolet;
 }
 
 .auto {
@@ -101,7 +148,6 @@ body {
 }
 
 /* Clear button */
-
 .eraser,
 .rainbow,
 .shade {
@@ -112,7 +158,8 @@ body {
     cursor: pointer;
 }
 
-.clear {
+.clear,
+.close-menu {
     color: rgb(227 18 18);
     background-color: rgb(255 227 231);
 
@@ -142,14 +189,14 @@ body {
     transform: translateY(0px);
     visibility: visible;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
-    transition: all 200ms ease-out;
+    transition: all 175ms ease-out;
 }
 
 .popup.hide {
     opacity: 0;
     transform: translateY(60px);
     visibility: hidden;
-    transition: all 200ms ease-in;
+    transition: all 150ms ease-in;
 }
 
 .agree-disagree-buttons {
