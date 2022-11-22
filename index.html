@@ -23,11 +23,18 @@
         <script src="script.js" defer></script>
     </head>
     <body>
+        <div class="menu">
+            <div class="range-value">Size: 1x1</div>
+            <input class="range-input" value="1" type="range" min="1" max="100" />
+            <div class="auto">Auto: no</div>
+            <div class="color">
+                <input class="color-input" type="color" />
+                <div class="color-value">#000</div>
+            </div>
+        </div>
         <div class="container">
             <h1>Etch A Sketch!</h1>
-            <div class="range-value">1</div>
-            <div class="auto">Auto: no</div>
-            <input class="range-input" value="1" type="range" min="1" max="100" />
+
             <div class="grid"></div>
         </div>
     </body>

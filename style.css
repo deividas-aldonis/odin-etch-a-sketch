@@ -20,14 +20,30 @@ body {
     width: 600px;
     height: 600px;
 
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
     user-select: none;
 }
 
 .grid > div {
-    border: 1px solid #333;
     height: 600px;
     width: 600px;
+}
+
+/* Menu */
+.menu {
+    position: fixed;
+
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 15%;
+    height: 100vh;
+    padding: 24px;
+
+    font-size: 32px;
+    text-align: center;
+
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
 
 .auto {
@@ -36,9 +52,50 @@ body {
     color: rgb(26 115 232);
     background-color: rgb(232 240 254);
 
-    font-size: 32px;
-
     border-radius: 4px;
     cursor: pointer;
     user-select: none;
+}
+
+/* range input */
+.range-input {
+    color: rgb(26 115 232);
+    background-color: rgb(232 240 254);
+
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* color input */
+.color {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+
+    color: rgb(26 115 232);
+    background-color: rgb(232 240 254);
+}
+
+.color-input {
+    width: 40px;
+    height: 40px;
+    border: none;
+
+    background-color: rgb(232 240 254);
+
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    cursor: pointer;
+}
+.color-input::-webkit-color-swatch {
+    border: none;
+
+    border-radius: 4px;
+}
+.color-input::-moz-color-swatch {
+    border: none;
+
+    border-radius: 15px;
 }
