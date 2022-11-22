@@ -119,11 +119,65 @@ body {
     cursor: pointer;
 }
 
-/* prompt window .agree,
+/* popup message for clear button */
+.popup-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.popup {
+    width: fit-content;
+    padding: 12px;
+
+    font-size: 24px;
+
+    background-color: #fff;
+
+    opacity: 1;
+    transform: translateY(0px);
+    visibility: visible;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    transition: all 200ms ease-out;
+}
+
+.popup.hide {
+    opacity: 0;
+    transform: translateY(60px);
+    visibility: hidden;
+    transition: all 200ms ease-in;
+}
+
+.agree-disagree-buttons {
+    display: flex;
+    margin-top: 12px;
+}
+
+.agree,
 .disagree {
+    flex: 1;
     border: none;
 
+    font-size: inherit;
     font-family: inherit;
 
     background: none;
-} */
+
+    cursor: pointer;
+}
+
+.agree {
+    padding: 4px;
+
+    color: #306e30;
+    background-color: #c9edc9;
+}
+
+.disagree {
+    padding: 4px;
+
+    color: rgb(227 18 18);
+    background-color: rgb(255 227 231);
+}

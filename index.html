@@ -23,10 +23,17 @@
         <script src="script.js" defer></script>
     </head>
     <body>
-        <!-- <div class="prompt">
-            <div>Are you sure?<br />This will clear the sketch pad and remove everything!</div>
-            <div><button class="agree">Yes</button><button class="disagree">No</button></div>
-        </div> -->
+        <div class="popup-overlay">
+            <div class="popup hide">
+                <div class="message">
+                    Are you sure?<br />This will clear the sketch pad and remove everything!
+                </div>
+                <div class="agree-disagree-buttons">
+                    <button class="agree">Yes</button>
+                    <button class="disagree">No</button>
+                </div>
+            </div>
+        </div>
         <div class="menu">
             <div class="range-value">Size: 1x1</div>
             <input class="range-input" value="1" type="range" min="1" max="100" />

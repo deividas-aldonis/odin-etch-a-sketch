@@ -9,6 +9,10 @@ const clear = document.querySelector('.clear');
 const eraser = document.querySelector('.eraser');
 const rainbow = document.querySelector('.rainbow');
 
+const popup = document.querySelector('.popup');
+const agree = document.querySelector('.agree');
+const disagree = document.querySelector('.disagree');
+
 const hexArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c', 'd', 'e', 'f'];
 let color = '#000';
 let autoMode = false;
@@ -97,12 +101,7 @@ auto.addEventListener('click', (e) => {
 });
 
 clear.addEventListener('click', () => {
-    const blocks = [...grid.children];
-
-    blocks.forEach((block) => {
-        const gridBlock = block;
-        gridBlock.style.backgroundColor = '#fff';
-    });
+    popup.classList.remove('hide');
 });
 
 eraser.addEventListener('click', (e) => {
@@ -130,12 +129,36 @@ rainbow.addEventListener('click', (e) => {
     }
 });
 
+agree.addEventListener('click', () => {
+    const blocks = [...grid.children];
+    blocks.forEach((block) => {
+        const gridBlock = block;
+        gridBlock.style.backgroundColor = '#fff';
+    });
+
+    popup.classList.add('hide');
+});
+
+disagree.addEventListener('click', () => {
+    popup.classList.add('hide');
+});
+
 window.addEventListener('mousedown', (e) => {
     mouseDown = true;
 });
 
 window.addEventListener('mouseup', () => {
     mouseDown = false;
+});
+
+window.addEventListener('click', (e) => {
+    if (popup.classList.contains('hide') || e.target.classList.contains('clear')) return;
+
+    const popupClicked = e.target.closest('.popup');
+
+    if (!popupClicked) {
+        popup.classList.add('hide');
+    }
 });
 
 createGrid();
