@@ -8,6 +8,8 @@ body {
     height: 100vh;
 
     font-family: 'Roboto', sans-serif;
+
+    background-color: #f1f1f1;
 }
 
 .container {
@@ -25,6 +27,8 @@ body {
     flex-wrap: wrap;
     width: 240px;
     height: 240px;
+
+    background-color: #fff;
 
     border-radius: 4px;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
@@ -153,7 +157,8 @@ body {
 /* Clear button */
 .eraser,
 .rainbow,
-.shade {
+.shade,
+.grid-lines {
     color: rgb(26 115 232);
     background-color: rgb(232 240 254);
 
@@ -233,6 +238,10 @@ body {
 
     color: rgb(227 18 18);
     background-color: rgb(255 227 231);
+}
+
+.border {
+    border: 1px solid #d1d1d1;
 }
 
 @media (min-width: 320px) {

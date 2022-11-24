@@ -9,6 +9,7 @@ const clear = document.querySelector('.clear');
 const eraser = document.querySelector('.eraser');
 const rainbow = document.querySelector('.rainbow');
 const shade = document.querySelector('.shade');
+const gridLines = document.querySelector('.grid-lines');
 
 const popup = document.querySelector('.popup');
 const agree = document.querySelector('.agree');
@@ -35,6 +36,7 @@ let autoMode = false;
 let eraserMode = false;
 let rainbowMode = false;
 let shadeMode = false;
+let gridMode = false;
 let mouseDown = false;
 
 const getRandomColor = () => {
@@ -97,6 +99,11 @@ const createGrid = (range = 1) => {
         div.style.height = `${blockSize}px`;
         div.style.width = `${blockSize}px`;
         div.dataset.shadeIndex = 0;
+
+        if (gridMode) {
+            div.classList.add('border');
+        }
+
         div.addEventListener('mouseenter', draw);
         div.addEventListener('mousedown', draw);
         grid.appendChild(div);
@@ -201,6 +208,20 @@ shade.addEventListener('click', (e) => {
     }
 });
 
+gridLines.addEventListener('click', () => {
+    const blocks = [...grid.children];
+    if (gridMode) {
+        blocks.forEach((block) => block.classList.remove('border'));
+        gridLines.textContent = 'Show grid: off';
+        gridMode = false;
+    } else {
+        blocks.forEach((block) => block.classList.add('border'));
+        gridLines.textContent = 'Show grid: on';
+
+        gridMode = true;
+    }
+});
+
 agree.addEventListener('click', () => {
     const blocks = [...grid.children];
     blocks.forEach((block) => {
@@ -240,6 +261,11 @@ window.addEventListener('click', (e) => {
     if (!popupClicked) {
         popup.classList.add('hide');
     }
+});
+
+window.addEventListener('resize', () => {
+    const range = rangeInput.valueAsNumber;
+    createGrid(range);
 });
 
 createGrid();
