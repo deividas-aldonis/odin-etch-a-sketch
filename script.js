@@ -1,112 +1,182 @@
+const grid = document.querySelector('.grid');
+const menu = document.querySelector('.menu');
+const popup = document.querySelector('.popup');
+
 const rangeValue = document.querySelector('.range-value');
 const rangeInput = document.querySelector('.range-input');
 const colorValue = document.querySelector('.color-value');
 const colorInput = document.querySelector('.color-input');
 
-const grid = document.querySelector('.grid');
-const auto = document.querySelector('.auto');
-const clear = document.querySelector('.clear');
-const eraser = document.querySelector('.eraser');
-const rainbow = document.querySelector('.rainbow');
-const shade = document.querySelector('.shade');
-const gridLines = document.querySelector('.grid-lines');
+const clearBtn = document.querySelector('.clear-btn');
+const autoModeBtn = document.querySelector('.auto-mode-btn');
+const eraserModeBtn = document.querySelector('.eraser-mode-btn');
+const rainbowModeBtn = document.querySelector('.rainbow-mode-btn');
+const shadeModeBtn = document.querySelector('.shade-mode-btn');
+const gridModeBtn = document.querySelector('.grid-mode-btn');
 
-const popup = document.querySelector('.popup');
-const agree = document.querySelector('.agree');
-const disagree = document.querySelector('.disagree');
-const menu = document.querySelector('.menu');
-const closeMenu = document.querySelector('.close-menu');
-const openMenu = document.querySelector('.open-menu');
+const agreeBtn = document.querySelector('.agree-btn');
+const disagreeBtn = document.querySelector('.disagree-btn');
+const closeMenuBtn = document.querySelector('.close-menu-btn');
+const openMenuBtn = document.querySelector('.open-menu-btn');
 
-const hexArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c', 'd', 'e', 'f'];
-const shadesOfBlack = [
-    '#D3D3D3',
-    '#C0C0C0',
-    '#B0B0B0',
-    '#989898',
-    '#787878',
-    '#696969',
-    '#505050',
-    '#383838',
-    '#282828',
-    '#000000'
-];
-let color = '#000';
-let autoMode = false;
-let eraserMode = false;
-let rainbowMode = false;
-let shadeMode = false;
-let gridMode = false;
-let mouseDown = false;
-
-const getRandomColor = () => {
-    let randomColor = '#';
-
-    for (let i = 0; i < 6; i += 1) {
-        const random = Math.floor(Math.random() * hexArr.length);
-        randomColor += hexArr[random];
-    }
-
-    return randomColor;
+const stateElements = {
+    gridMode: document.querySelector('.grid-mode-state'),
+    autoMode: document.querySelector('.auto-mode-state'),
+    eraserMode: document.querySelector('.eraser-mode-state'),
+    shadeMode: document.querySelector('.shade-mode-state'),
+    rainbowMode: document.querySelector('.rainbow-mode-state')
 };
 
-const draw = (e) => {
-    let tempColor = '';
+const settings = {
+    autoMode: false,
+    eraserMode: false,
+    rainbowMode: false,
+    shadeMode: false,
+    gridMode: false,
+    mouseDown: false,
 
-    if (eraserMode) {
-        tempColor = '#fff';
-    } else if (rainbowMode) {
-        tempColor = getRandomColor();
-    } else if (shadeMode) {
-        const { shadeIndex } = e.target.dataset;
-        tempColor = shadesOfBlack[Number(shadeIndex)];
-    } else {
-        tempColor = color;
+    calculateGridSize() {
+        const range = rangeInput.valueAsNumber;
+        const { width: gridWidth } = grid.getBoundingClientRect();
+        const blockSize = gridWidth / range;
+        const gridSize = range ** 2;
+        return { gridSize, blockSize };
+    },
+    turnOffMode(...modes) {
+        modes.forEach((mode) => {
+            this[mode] = false;
+            stateElements[mode].textContent = 'off';
+        });
+    },
+    turnOnMode(...modes) {
+        modes.forEach((mode) => {
+            this[mode] = true;
+            stateElements[mode].textContent = 'on';
+        });
     }
+};
 
-    if (e.type === 'mousedown' || e.type === 'touchstart') {
-        e.target.style.backgroundColor = tempColor;
+const colors = {
+    defaultColor: '#000000',
+    currentColor: '#000000',
+    eraserColor: '#ffffff',
+    hexValues: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c', 'd', 'e', 'f'],
+    shadeValues: [
+        '#D3D3D3',
+        '#C0C0C0',
+        '#B0B0B0',
+        '#989898',
+        '#787878',
+        '#696969',
+        '#505050',
+        '#383838',
+        '#282828',
+        '#000000'
+    ],
 
-        if (!shadeMode) {
-            e.target.dataset.shadeIndex = 0;
-        } else if (shadeMode) {
-            const { shadeIndex } = e.target.dataset;
-            const nextIndex = Number(shadeIndex) + 1;
-            e.target.dataset.shadeIndex = nextIndex > 9 ? 9 : nextIndex;
+    getRandomColor() {
+        let randomColor = '#';
+
+        for (let i = 0; i < 6; i += 1) {
+            const random = Math.floor(Math.random() * this.hexValues.length);
+            randomColor += this.hexValues[random];
         }
-    } else if (mouseDown || autoMode) {
-        e.target.style.backgroundColor = tempColor;
+
+        return randomColor;
+    },
+    getShadeColor(shadeIndex) {
+        return this.shadeValues[+shadeIndex];
+    },
+    getColor(target) {
+        const { eraserMode, rainbowMode, shadeMode } = settings;
 
         if (eraserMode) {
-            e.target.dataset.shadeIndex = 0;
-        } else if (shadeMode) {
-            const { shadeIndex } = e.target.dataset;
-            const nextIndex = Number(shadeIndex) + 1;
-            e.target.dataset.shadeIndex = nextIndex > 9 ? 9 : nextIndex;
+            return this.eraserColor;
         }
+        if (rainbowMode) {
+            return this.getRandomColor();
+        }
+        if (shadeMode) {
+            return this.getShadeColor(target.dataset.shadeIndex);
+        }
+
+        return this.currentColor;
     }
 };
 
-const createGrid = (range = 1) => {
-    grid.textContent = '';
+const UI = {
+    draw(e) {
+        const { target } = e;
+        const { autoMode, shadeMode, mouseDown } = settings;
+        const color = colors.getColor(target);
 
-    const { width: gridWidth } = grid.getBoundingClientRect();
-    const blockSize = gridWidth / range;
-    const gridSize = range ** 2;
+        if (autoMode || mouseDown || e.type === 'mousedown') {
+            target.style.backgroundColor = color;
 
-    for (let i = 0; i < gridSize; i += 1) {
-        const div = document.createElement('div');
-        div.style.height = `${blockSize}px`;
-        div.style.width = `${blockSize}px`;
-        div.dataset.shadeIndex = 0;
-
-        if (gridMode) {
-            div.classList.add('border');
+            if (!shadeMode) {
+                target.dataset.shadeIndex = 0;
+            } else if (shadeMode) {
+                const { shadeIndex } = target.dataset;
+                const nextIndex = Number(shadeIndex) + 1;
+                target.dataset.shadeIndex = nextIndex > 9 ? 9 : nextIndex;
+            }
         }
+    },
+    createGrid() {
+        grid.textContent = '';
+        const { gridSize, blockSize } = settings.calculateGridSize();
 
-        div.addEventListener('mouseenter', draw);
-        div.addEventListener('mousedown', draw);
-        grid.appendChild(div);
+        for (let i = 0; i < gridSize; i += 1) {
+            const div = document.createElement('div');
+            div.style.height = `${blockSize}px`;
+            div.style.width = `${blockSize}px`;
+            div.dataset.shadeIndex = 0;
+
+            if (settings.gridMode) {
+                div.classList.add('border');
+            }
+            div.addEventListener('mousedown', this.draw);
+
+            div.addEventListener('mouseenter', this.draw);
+            grid.appendChild(div);
+        }
+    },
+    clearCanvas() {
+        [...grid.children].forEach((block) => {
+            const gridBlock = block;
+            gridBlock.style.backgroundColor = '#fff';
+            gridBlock.dataset.shadeIndex = 0;
+        });
+    },
+    showPopup() {
+        popup.classList.remove('hide');
+    },
+    hidePopup() {
+        popup.classList.add('hide');
+    },
+    addGridLines() {
+        [...grid.children].forEach((block) => block.classList.add('border'));
+    },
+    removeGridLines() {
+        [...grid.children].forEach((block) => block.classList.remove('border'));
+    },
+    openMenu() {
+        menu.classList.remove('hide');
+
+        if (openMenuBtn.classList.contains('pulse')) {
+            openMenuBtn.classList.remove('pulse');
+        }
+    },
+    closeMenu() {
+        menu.classList.add('hide');
+    },
+    checkIfPopupWasClicked(e) {
+        if (popup.classList.contains('hide') || e.target.classList.contains('clear-btn')) return;
+        const popupClicked = e.target.closest('.popup');
+
+        if (!popupClicked) {
+            this.hidePopup();
+        }
     }
 };
 
@@ -116,159 +186,102 @@ rangeInput.addEventListener('input', (e) => {
 
 rangeInput.addEventListener('change', (e) => {
     const range = e.target.valueAsNumber;
-    createGrid(range);
+    UI.createGrid(range);
 });
 
 colorInput.addEventListener('input', (e) => {
     colorValue.textContent = e.target.value;
-    color = e.target.value;
+    colors.currentColor = e.target.value;
+
+    settings.turnOffMode('eraserMode', 'rainbowMode', 'shadeMode');
+});
+
+autoModeBtn.addEventListener('click', () => {
+    if (settings.autoMode) {
+        settings.turnOffMode('autoMode');
+    } else {
+        settings.turnOnMode('autoMode');
+    }
+});
+
+eraserModeBtn.addEventListener('click', () => {
+    const { eraserMode, rainbowMode, shadeMode } = settings;
 
     if (eraserMode) {
-        eraserMode = false;
-        eraser.textContent = 'Eraser: off';
-    }
-    if (rainbowMode) {
-        rainbowMode = false;
-        rainbow.textContent = 'Rainbow: off';
-    }
-    if (shadeMode) {
-        shadeMode = false;
-        shade.textContent = 'Shade: off';
-    }
-});
-
-auto.addEventListener('click', (e) => {
-    if (autoMode) {
-        e.target.textContent = 'Auto: off';
-        autoMode = false;
+        settings.turnOffMode('eraserMode');
     } else {
-        e.target.textContent = 'Auto: on';
-        autoMode = true;
-    }
-});
-
-clear.addEventListener('click', () => {
-    popup.classList.remove('hide');
-});
-
-eraser.addEventListener('click', (e) => {
-    if (eraserMode) {
-        e.target.textContent = 'Eraser: off';
-        eraserMode = false;
-    } else {
-        e.target.textContent = 'Eraser: on';
-        eraserMode = true;
+        settings.turnOnMode('eraserMode');
 
         if (rainbowMode) {
-            rainbowMode = false;
-            rainbow.textContent = 'Rainbow: off';
+            settings.turnOffMode('rainbowMode');
         }
         if (shadeMode) {
-            shadeMode = false;
-            shade.textContent = 'Shade: off';
+            settings.turnOffMode('shadeMode');
         }
     }
 });
 
-rainbow.addEventListener('click', (e) => {
+rainbowModeBtn.addEventListener('click', () => {
+    const { eraserMode, rainbowMode, shadeMode } = settings;
+
     if (rainbowMode) {
-        e.target.textContent = 'Rainbow: off';
-        rainbowMode = false;
+        settings.turnOffMode('rainbowMode');
     } else {
-        e.target.textContent = 'Rainbow: on';
-        rainbowMode = true;
+        settings.turnOnMode('rainbowMode');
 
         if (eraserMode) {
-            eraser.textContent = 'Eraser: off';
-            eraserMode = false;
+            settings.turnOffMode('eraserMode');
         }
         if (shadeMode) {
-            shadeMode = false;
-            shade.textContent = 'Shade: off';
+            settings.turnOffMode('shadeMode');
         }
     }
 });
 
-shade.addEventListener('click', (e) => {
+shadeModeBtn.addEventListener('click', () => {
+    const { eraserMode, rainbowMode, shadeMode } = settings;
+
     if (shadeMode) {
-        e.target.textContent = 'Shade: off';
-        shadeMode = false;
+        settings.turnOffMode('shadeMode');
     } else {
-        e.target.textContent = 'Shade: on';
-        shadeMode = true;
+        settings.turnOnMode('shadeMode');
 
         if (eraserMode) {
-            eraser.textContent = 'Eraser: off';
-            eraserMode = false;
+            settings.turnOffMode('eraserMode');
         }
         if (rainbowMode) {
-            rainbowMode = false;
-            rainbow.textContent = 'Rainbow: off';
+            settings.turnOffMode('rainbowMode');
         }
     }
 });
 
-gridLines.addEventListener('click', () => {
-    const blocks = [...grid.children];
-    if (gridMode) {
-        blocks.forEach((block) => block.classList.remove('border'));
-        gridLines.textContent = 'Show grid: off';
-        gridMode = false;
+gridModeBtn.addEventListener('click', () => {
+    if (settings.gridMode) {
+        UI.removeGridLines();
+        settings.turnOffMode('gridMode');
     } else {
-        blocks.forEach((block) => block.classList.add('border'));
-        gridLines.textContent = 'Show grid: on';
-
-        gridMode = true;
+        UI.addGridLines();
+        settings.turnOnMode('gridMode');
     }
 });
 
-agree.addEventListener('click', () => {
-    const blocks = [...grid.children];
-    blocks.forEach((block) => {
-        const gridBlock = block;
-        gridBlock.style.backgroundColor = '#fff';
-        gridBlock.dataset.shadeIndex = 0;
-    });
+clearBtn.addEventListener('click', UI.showPopup);
 
-    popup.classList.add('hide');
+agreeBtn.addEventListener('click', () => {
+    UI.clearCanvas();
+    UI.hidePopup();
 });
 
-disagree.addEventListener('click', () => {
-    popup.classList.add('hide');
-});
+disagreeBtn.addEventListener('click', UI.hidePopup);
+closeMenuBtn.addEventListener('click', UI.closeMenu);
+openMenuBtn.addEventListener('click', UI.openMenu);
 
-closeMenu.addEventListener('click', () => {
-    menu.classList.add('hide');
+window.addEventListener('mousedown', () => {
+    settings.mouseDown = true;
 });
-
-openMenu.addEventListener('click', () => {
-    menu.classList.remove('hide');
-    openMenu.classList.remove('pulse');
-});
-
-window.addEventListener('mousedown', (e) => {
-    mouseDown = true;
-});
-
 window.addEventListener('mouseup', () => {
-    mouseDown = false;
+    settings.mouseDown = false;
 });
-
-window.addEventListener('click', (e) => {
-    if (popup.classList.contains('hide') || e.target.classList.contains('clear')) return;
-
-    const popupClicked = e.target.closest('.popup');
-
-    if (!popupClicked) {
-        popup.classList.add('hide');
-    }
-});
-
-window.addEventListener('resize', () => {
-    const range = rangeInput.valueAsNumber;
-    createGrid(range);
-});
-
-window.addEventListener('DOMContentLoaded', () => {
-    createGrid();
-});
+window.addEventListener('click', UI.checkIfPopupWasClicked.bind(UI));
+window.addEventListener('resize', UI.createGrid.bind(UI));
+window.addEventListener('DOMContentLoaded', UI.createGrid.bind(UI));

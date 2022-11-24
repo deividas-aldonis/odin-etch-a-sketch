@@ -35,7 +35,7 @@ body {
     user-select: none;
 }
 /* Menu */
-.open-menu {
+.open-menu-btn {
     position: absolute;
     top: 16px;
     left: 16px;
@@ -100,7 +100,7 @@ body {
     border-top: 1px solid blueviolet;
 }
 
-.auto {
+.auto-mode-btn {
     padding: 2px 12px;
 
     color: rgb(26 115 232);
@@ -155,10 +155,10 @@ body {
 }
 
 /* Clear button */
-.eraser,
-.rainbow,
-.shade,
-.grid-lines {
+.eraser-mode-btn,
+.rainbow-mode-btn,
+.shade-mode-btn,
+.grid-mode-btn {
     color: rgb(26 115 232);
     background-color: rgb(232 240 254);
 
@@ -166,8 +166,8 @@ body {
     cursor: pointer;
 }
 
-.clear,
-.close-menu {
+.clear-btn,
+.close-menu-btn {
     color: rgb(227 18 18);
     background-color: rgb(255 227 231);
 
@@ -213,8 +213,8 @@ body {
     margin-top: 12px;
 }
 
-.agree,
-.disagree {
+.agree-btn,
+.disagree-btn {
     flex: 1;
     border: none;
 
@@ -226,14 +226,14 @@ body {
     cursor: pointer;
 }
 
-.agree {
+.agree-btn {
     padding: 4px;
 
     color: #306e30;
     background-color: #c9edc9;
 }
 
-.disagree {
+.disagree-btn {
     padding: 4px;
 
     color: rgb(227 18 18);
