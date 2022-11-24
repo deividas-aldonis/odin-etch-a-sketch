@@ -67,6 +67,7 @@ body {
 
     background-color: #fff;
 
+    overflow: auto;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
     transition: all 200ms ease-in-out;
 }
@@ -79,7 +80,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 60px;
+    margin-bottom: 32px;
 }
 
 .etch {
