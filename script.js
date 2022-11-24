@@ -243,6 +243,7 @@ closeMenu.addEventListener('click', () => {
 
 openMenu.addEventListener('click', () => {
     menu.classList.remove('hide');
+    openMenu.classList.remove('pulse');
 });
 
 window.addEventListener('mousedown', (e) => {
@@ -268,4 +269,6 @@ window.addEventListener('resize', () => {
     createGrid(range);
 });
 
-createGrid();
+window.addEventListener('DOMContentLoaded', () => {
+    createGrid();
+});
