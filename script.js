@@ -242,9 +242,4 @@ window.addEventListener('click', (e) => {
     }
 });
 
-window.addEventListener('resize', () => {
-    const range = rangeInput.valueAsNumber;
-    createGrid(range);
-});
-
 createGrid();
