@@ -62,7 +62,7 @@ const draw = (e) => {
         tempColor = color;
     }
 
-    if (e.type === 'mousedown') {
+    if (e.type === 'mousedown' || e.type === 'touchstart') {
         e.target.style.backgroundColor = tempColor;
 
         if (!shadeMode) {
@@ -240,6 +240,11 @@ window.addEventListener('click', (e) => {
     if (!popupClicked) {
         popup.classList.add('hide');
     }
+});
+
+window.addEventListener('resize', () => {
+    const range = rangeInput.valueAsNumber;
+    createGrid(range);
 });
 
 createGrid();
