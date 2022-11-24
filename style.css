@@ -154,7 +154,6 @@ body {
     border-radius: 15px;
 }
 
-/* Clear button */
 .eraser-mode-btn,
 .rainbow-mode-btn,
 .shade-mode-btn,
@@ -247,6 +246,11 @@ body {
 .pulse {
     box-shadow: 0px 0px 1px 1px #0000001a;
     animation: pulse-animation 1.5s infinite;
+}
+
+.active {
+    color: #306e30;
+    background-color: #c9edc9;
 }
 
 @keyframes pulse-animation {

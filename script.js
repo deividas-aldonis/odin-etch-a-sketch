@@ -46,19 +46,21 @@ const settings = {
         modes.forEach((mode) => {
             this[mode] = false;
             stateElements[mode].textContent = 'off';
+            stateElements[mode].parentElement.classList.remove('active');
         });
     },
     turnOnMode(...modes) {
         modes.forEach((mode) => {
             this[mode] = true;
             stateElements[mode].textContent = 'on';
+            stateElements[mode].parentElement.classList.add('active');
         });
     }
 };
 
 const colors = {
     defaultColor: '#000000',
-    currentColor: '#000000',
+    colorInputColor: '#000000',
     eraserColor: '#ffffff',
     hexValues: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c', 'd', 'e', 'f'],
     shadeValues: [
@@ -100,7 +102,7 @@ const colors = {
             return this.getShadeColor(target.dataset.shadeIndex);
         }
 
-        return this.currentColor;
+        return this.colorInputColor;
     }
 };
 
@@ -191,7 +193,7 @@ rangeInput.addEventListener('change', (e) => {
 
 colorInput.addEventListener('input', (e) => {
     colorValue.textContent = e.target.value;
-    colors.currentColor = e.target.value;
+    colors.colorInputColor = e.target.value;
 
     settings.turnOffMode('eraserMode', 'rainbowMode', 'shadeMode');
 });
