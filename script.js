@@ -129,8 +129,10 @@ const UI = {
         }
     },
     createGrid() {
-        grid.textContent = '';
         const { gridSize, blockSize } = settings.calculateGridSize();
+
+        grid.textContent = '';
+        grid.addEventListener('mousedown', this.draw);
 
         for (let i = 0; i < gridSize; i += 1) {
             const div = document.createElement('div');
@@ -141,7 +143,6 @@ const UI = {
             if (settings.gridMode) {
                 div.classList.add('border');
             }
-            div.addEventListener('mousedown', this.draw);
 
             div.addEventListener('mouseenter', this.draw);
             grid.appendChild(div);
