@@ -74,9 +74,24 @@ body {
     border: 1px solid #d1d1d1;
 }
 
-/*//////////////
-MENU
-//////////////*/
+/* toast */
+.toast {
+    position: absolute;
+    top: 61px;
+    left: 61px;
+
+    width: fit-content;
+    padding: 4px 8px;
+
+    color: rgb(26 115 232);
+    background-color: rgb(232 240 254);
+
+    font-size: 18px;
+
+    border-radius: 2px;
+    user-select: none;
+}
+
 /* menu button */
 .open-menu-btn {
     position: absolute;
@@ -110,7 +125,7 @@ MENU
 
     padding: 24px;
 
-    font-size: 24px;
+    font-size: 22px;
     text-align: center;
 
     color: var(--menu-color);

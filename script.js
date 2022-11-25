@@ -1,6 +1,7 @@
 const grid = document.querySelector('.grid');
 const menu = document.querySelector('.menu');
 const popup = document.querySelector('.popup');
+const toast = document.querySelector('.toast');
 
 const rangeValue = document.querySelector('.range-value');
 const rangeInput = document.querySelector('.range-input');
@@ -170,6 +171,8 @@ const UI = {
 
         if (openMenuBtn.classList.contains('pulse')) {
             openMenuBtn.classList.remove('pulse');
+
+            toast.remove();
         }
     },
     closeMenu() {
