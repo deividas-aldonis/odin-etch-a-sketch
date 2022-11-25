@@ -23,18 +23,12 @@
         <script src="script.js" defer></script>
     </head>
     <body>
+        <!-- MENU -->
+        <!-- MENU BUTTON -->
         <div class="open-menu-btn pulse">
             <i class="fa-solid fa-bars"></i>
         </div>
-        <div class="popup-overlay">
-            <div class="popup hide">
-                <div class="message">Are you sure?<br />This will remove everything!</div>
-                <div class="agree-disagree-buttons">
-                    <button class="agree-btn">Yes</button>
-                    <button class="disagree-btn">No</button>
-                </div>
-            </div>
-        </div>
+        <!-- END OF MENU BUTTON -->
         <div class="menu hide">
             <div class="logo">
                 <div class="etch">Etch</div>
@@ -49,14 +43,29 @@
             <div class="eraser-mode-btn">Eraser: <span class="eraser-mode-state">off</span></div>
             <div class="rainbow-mode-btn">Rainbow: <span class="rainbow-mode-state">off</span></div>
             <div class="shade-mode-btn">Shade: <span class="shade-mode-state">off</span></div>
+            <div class="grid-mode-btn">Grid: <span class="grid-mode-state">off</span></div>
             <div class="color">
                 <input class="color-input" type="color" />
                 <div class="color-value">#000000</div>
             </div>
-            <div class="grid-mode-btn">Grid: <span class="grid-mode-state">off</span></div>
+            <div class="dark-mode-btn">Dark Mode: <span class="dark-mode-state">off</span></div>
             <div class="clear-btn">Clear</div>
             <div class="close-menu-btn">Close menu</div>
         </div>
+        <!-- END OF MENU -->
+
+        <!-- POPUP -->
+        <div class="popup-overlay">
+            <div class="popup hide">
+                <div class="message">Are you sure?<br />This will remove everything!</div>
+                <div class="agree-disagree-buttons">
+                    <button class="agree-btn">Yes</button>
+                    <button class="disagree-btn">No</button>
+                </div>
+            </div>
+        </div>
+        <!-- END OF POPUP -->
+
         <div class="container">
             <div class="grid"></div>
         </div>

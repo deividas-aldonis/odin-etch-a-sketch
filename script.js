@@ -13,6 +13,7 @@ const eraserModeBtn = document.querySelector('.eraser-mode-btn');
 const rainbowModeBtn = document.querySelector('.rainbow-mode-btn');
 const shadeModeBtn = document.querySelector('.shade-mode-btn');
 const gridModeBtn = document.querySelector('.grid-mode-btn');
+const darkModeBtn = document.querySelector('.dark-mode-btn');
 
 const agreeBtn = document.querySelector('.agree-btn');
 const disagreeBtn = document.querySelector('.disagree-btn');
@@ -24,7 +25,8 @@ const stateElements = {
     autoMode: document.querySelector('.auto-mode-state'),
     eraserMode: document.querySelector('.eraser-mode-state'),
     shadeMode: document.querySelector('.shade-mode-state'),
-    rainbowMode: document.querySelector('.rainbow-mode-state')
+    rainbowMode: document.querySelector('.rainbow-mode-state'),
+    darkMode: document.querySelector('.dark-mode-state')
 };
 
 const settings = {
@@ -33,6 +35,7 @@ const settings = {
     rainbowMode: false,
     shadeMode: false,
     gridMode: false,
+    darkMode: false,
     mouseDown: false,
 
     calculateGridSize() {
@@ -179,6 +182,35 @@ const UI = {
         if (!popupClicked) {
             this.hidePopup();
         }
+    },
+    checkForTheme() {
+        const storedTheme =
+            localStorage.getItem('theme') ||
+            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+
+        if (storedTheme === 'light') {
+            settings.darkMode = false;
+        }
+        if (storedTheme === 'dark') {
+            settings.turnOnMode('darkMode');
+        }
+        if (storedTheme) document.documentElement.setAttribute('data-theme', storedTheme);
+    },
+    setTheme() {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        let targetTheme;
+
+        if (currentTheme === 'light') {
+            targetTheme = 'dark';
+            settings.turnOnMode('darkMode');
+        }
+        if (currentTheme === 'dark') {
+            targetTheme = 'light';
+            settings.turnOffMode('darkMode');
+        }
+
+        document.documentElement.setAttribute('data-theme', targetTheme);
+        localStorage.setItem('theme', targetTheme);
     }
 };
 
@@ -267,6 +299,8 @@ gridModeBtn.addEventListener('click', () => {
     }
 });
 
+darkModeBtn.addEventListener('click', UI.setTheme);
+
 clearBtn.addEventListener('click', UI.showPopup);
 
 agreeBtn.addEventListener('click', () => {
@@ -286,4 +320,7 @@ window.addEventListener('mouseup', () => {
 });
 window.addEventListener('click', UI.checkIfPopupWasClicked.bind(UI));
 window.addEventListener('resize', UI.createGrid.bind(UI));
-window.addEventListener('DOMContentLoaded', UI.createGrid.bind(UI));
+window.addEventListener('DOMContentLoaded', () => {
+    UI.createGrid();
+    UI.checkForTheme();
+});
