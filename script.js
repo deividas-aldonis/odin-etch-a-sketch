@@ -147,7 +147,17 @@ const UI = {
             grid.appendChild(div);
         }
     },
-    clearCanvas() {
+    recreateGrid() {
+        const { _, blockSize } = settings.calculateGridSize();
+        const blocks = [...grid.children];
+
+        blocks.forEach((block) => {
+            const b = block;
+            b.style.height = `${blockSize}px`;
+            b.style.width = `${blockSize}px`;
+        });
+    },
+    clearGrid() {
         [...grid.children].forEach((block) => {
             const gridBlock = block;
             gridBlock.style.backgroundColor = '#fff';
@@ -307,7 +317,7 @@ darkModeBtn.addEventListener('click', UI.setTheme);
 clearBtn.addEventListener('click', UI.showPopup);
 
 agreeBtn.addEventListener('click', () => {
-    UI.clearCanvas();
+    UI.clearGrid();
     UI.hidePopup();
 });
 
@@ -322,7 +332,7 @@ window.addEventListener('mouseup', () => {
     settings.mouseDown = false;
 });
 window.addEventListener('click', UI.checkIfPopupWasClicked.bind(UI));
-window.addEventListener('resize', UI.createGrid.bind(UI));
+window.addEventListener('resize', UI.recreateGrid.bind(UI));
 window.addEventListener('DOMContentLoaded', () => {
     UI.createGrid();
     UI.checkForTheme();
