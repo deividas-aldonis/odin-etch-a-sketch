@@ -182,7 +182,6 @@ const UI = {
 
         if (openMenuBtn.classList.contains('pulse')) {
             openMenuBtn.classList.remove('pulse');
-
             toast.remove();
         }
     },
@@ -240,7 +239,6 @@ rangeInput.addEventListener('change', (e) => {
 colorInput.addEventListener('input', (e) => {
     colorValue.textContent = e.target.value;
     colors.colorInputColor = e.target.value;
-
     settings.turnOffMode('eraserMode', 'rainbowMode', 'shadeMode');
 });
 
@@ -329,11 +327,14 @@ openMenuBtn.addEventListener('click', UI.openMenu);
 window.addEventListener('mousedown', () => {
     settings.mouseDown = true;
 });
+
 window.addEventListener('mouseup', () => {
     settings.mouseDown = false;
 });
+
 window.addEventListener('click', UI.checkIfPopupWasClicked.bind(UI));
 window.addEventListener('resize', UI.recreateGrid.bind(UI));
+
 window.addEventListener('DOMContentLoaded', () => {
     UI.createGrid();
     UI.checkForTheme();
